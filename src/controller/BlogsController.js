@@ -1,9 +1,10 @@
+const BlogModel = require("../Model/BlogModel")
 const authorModel = require("../Model/authorModel")
 
-const createAuthor = async function (req, res) {
+const createBlogs = async function (req, res) {
     try {
         let data = req.body
-        let savedData = await authorModel.create(data)
+        let savedData = await BlogModel.create(data)
         return res.status(201).send({ msg: savedData })
     }
     catch (err) {
@@ -11,6 +12,4 @@ const createAuthor = async function (req, res) {
         res.status(500).send({ msg: err.message })
     }
 }
-
-
- module.exports.createAuthor=createAuthor
+module.exports.createBlogs=createBlogs
