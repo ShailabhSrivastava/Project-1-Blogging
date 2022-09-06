@@ -16,4 +16,28 @@ const createBlogs = async function (req, res) {
         res.status(500).send({ msg: err.message })
     }
 }
+
+
+const updateBlog = async function (req, res) {
+    try {
+        const blogData = req.body
+        let blog = await BlogModel.findOneAndUpdate(
+            { isDeleted: false },
+            {
+                $set: { isPublished: true, body: blogData.body, title: blogData.title, publishedAt: new Date() },
+                $push: { tags: blogData.tags, subcategory: blogData.subcategory }
+            },
+            { new: true });
+            return res.status(200).send({ status: true, data: blog });
+            }    
+        catch (error) {
+        console.log(error)
+        return res.status(500).send({ status: false, Error: error.message })
+    }
+
+}
+
+
+
 module.exports.createBlogs=createBlogs
+module.exports.updateBlog=updateBlog
