@@ -4,10 +4,10 @@ const authorModel = require("../Model/authorModel")
 const createBlogs = async function (req, res) {
     try {
         let data = req.body
-        let author= await authorModel.findById(data.author_id)
-        if (!author){
-            res.status(404).send({msg: "author ID is not valid", status:false})
-        } 
+        let author = await authorModel.findById(data.author_id)
+        if (!author) {
+            res.status(404).send({ msg: "author ID is not valid", status: false })
+        }
         let savedData = await BlogModel.create(data)
         return res.status(201).send({ msg: savedData })
     }
@@ -21,6 +21,8 @@ const createBlogs = async function (req, res) {
 const updateBlog = async function (req, res) {
     try {
         const blogData = req.body
+        let BLOG = req.params.blogsId
+        if (!BLOG) return res.status(404).send({ status: false, data: "ID not Found in path param" })
         let blog = await BlogModel.findOneAndUpdate(
             { isDeleted: false },
             {
@@ -28,9 +30,9 @@ const updateBlog = async function (req, res) {
                 $push: { tags: blogData.tags, subcategory: blogData.subcategory }
             },
             { new: true });
-            return res.status(200).send({ status: true, data: blog });
-            }    
-        catch (error) {
+        return res.status(200).send({ status: true, data: blog });
+    }
+    catch (error) {
         console.log(error)
         return res.status(500).send({ status: false, Error: error.message })
     }
@@ -39,5 +41,5 @@ const updateBlog = async function (req, res) {
 
 
 
-module.exports.createBlogs=createBlogs
-module.exports.updateBlog=updateBlog
+module.exports.createBlogs = createBlogs
+module.exports.updateBlog = updateBlog
