@@ -9,6 +9,10 @@ router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
  
+
+router.get ("/blogs",function(req,res) {
+res.send("this is second api")
+})
 router.post("/authors", authorController.createAuthor)
 router.get("/blog",BlogsController.getBlogs)
 router.post("/Blogs", BlogsController.createBlogs)        
