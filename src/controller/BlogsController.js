@@ -1,5 +1,6 @@
 const BlogModel = require("../Model/BlogModel")
 const authorModel = require("../Model/authorModel")
+const mongoose = require('mongoose');
 
 const createBlogs = async function (req, res) {
     try {
@@ -20,9 +21,9 @@ const createBlogs = async function (req, res) {
 
 const updateBlog = async function (req, res) {
     try {
-        const blogData = req.params
-        // let BLOG = req.params.blogId
-        // if (!BLOG) return res.status(404).send({ status: false, data: "ID not Found in path param" })
+        const blogData = req.params  
+        let BLOG = req.params.blogId
+        if (!mongoose.isValidObjectId(BLOG)){ return res.status(404).send({ status: false, data: "ID not Found in path param" })}
         let blog = await BlogModel.findOneAndUpdate(
             { isDeleted: false },
             {
@@ -45,10 +46,8 @@ const deleteBlogs = async function (req, res) {
     try {
         let data = req.params
         console.log(data)
-        let blog = await BlogModel.findById()
-        if (blog.isDeleted === true) {
-            return res.status(404).send({ status: false, message: "No such blogId exists" })
-        }
+        let BLOG = req.params.blogId
+        if (!mongoose.isValidObjectId(BLOG)){ return res.status(404).send({ status: false, data: "ID not Found in path param" })}
         let deletedBlog = await BlogModel.findOneAndUpdate({ isDeleted: false }, { isDeleted: true, deletedAt: new Date() })
         res.status(200).send({ status: true, msg: deletedBlog })
     } catch (error) {
