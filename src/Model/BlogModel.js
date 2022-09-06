@@ -41,9 +41,7 @@ const BlogSchema = new mongoose.Schema({
 
     deletedAt:Date,
     
-    publishedAt: {
-        type:string
-    },
+    publishedAt: Date,
 },
 
 
