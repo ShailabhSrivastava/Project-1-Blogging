@@ -2,48 +2,50 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const ObjectId = mongoose.Schema.Types.ObjectId
-
+const moment = require('moment');
 const BlogSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    body: {
+        type: String,
+        required: true,
+    },
+    authorId: {
+        type: ObjectId,
+        required: true,
+        ref: "authorProject",
+    },
+    tags: {
+        type: Array     
+    },
+
+    category: {
+        type: String,
+        required: true,
+    },
+    subcategory:{
+        type: Array 
+    },
     
-title:{
-    type: String,
-    required:true
-},
-body: {
-    type:String,
-    required:true
 
-},
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
+    },
 
-author_id:{
-    type: ObjectId,
-    required: true,
-    ref: "authorProject"
-},
-tags:
-    [String]
-,
-category:{
-    type:String,
-    required:true
+    deletedAt:Date,
+    
+    publishedAt: {
+        type:string
+    },
 },
 
-subcategory:{
-    type:String
-
-},
-isDeleted: {
-    type: Boolean,
-    default: false
-},
-isPublished: {
-    type: Boolean,
-    default: false
-}
-
-// deletedAt: Date,
-// publishedAt: Date
-},
 
 
  { timestamps: true });
