@@ -86,7 +86,7 @@ const updateBlog = async function (req, res) {
         let BLOG = req.params.blogId
         if (!mongoose.isValidObjectId(BLOG)){ return res.status(404).send({ status: false, data: "ID not Found in path param" })}
         let blog = await BlogModel.findOneAndUpdate(
-            { isDeleted: false },
+            { isDeleted: false , _id:BLOG},
             {
                 $set: { isPublished: true, body: blogData.body, title: blogData.title, publishedAt: new Date() },
                 $push: { tags: blogData.tags, subcategory: blogData.subcategory }
@@ -109,7 +109,8 @@ const deleteBlogs = async function (req, res) {
         console.log(data)
         let BLOG = req.params.blogId
         if (!mongoose.isValidObjectId(BLOG)){ return res.status(404).send({ status: false, data: "ID not Found in path param" })}
-        let deletedBlog = await BlogModel.findOneAndUpdate({ isDeleted: false }, { isDeleted: true, deletedAt: new Date() })
+        let deletedBlog = await BlogModel.findOneAndUpdate({ isDeleted: false, _id:BLOG }, { isDeleted: true, deletedAt: new Date() }
+        ,{ new: true }); 
         res.status(200).send({ status: true, msg: deletedBlog })
     } catch (error) {
         res.status(500).send({ status: false, Error: error.message })  
