@@ -3,6 +3,7 @@ const router = express.Router();
 const authorController= require('../controller/authorController')
 const BlogsController= require('../controller/BlogsController')
 const jwt = require("jsonwebtoken")
+const middleware= require("../middleware/auth")
 
 
 
@@ -19,8 +20,8 @@ res.send("this is second api")
 router.post("/authors", authorController.createAuthor)
 router.get("/blog",BlogsController.getBlogs)
 router.post("/Blogs", BlogsController.createBlogs)        
-router.put("/blogs/:blogId", BlogsController.updateBlog)
+router.put("/blogs/:blogId", middleware.mid1, middleware.authorization, BlogsController.updateBlog)
 router.delete("/blogs/:blogId", BlogsController.deleteBlogs)
-router.post("/login", authorController.loginUser)
+router.post("/login", authorController.loginUser)    
 
 module.exports = router;

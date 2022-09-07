@@ -22,11 +22,11 @@ const loginUser = async function (req, res) {
         return res.status(404).send({ msg: "username or the password is not corerct", status: false, })
       let token = jwt.sign({ userId: user._id.toString(), batch: "plutonium", organisation: "FunctionUp", }, "P1@roject");
       res.status(202).send({ status: true, token: token });
-    } catch (err) {
-      res.status(500).send({ msg: "ERROR", error: err.message })
+    } catch (err) {  
+      res.status(500).send({ msg: "ERROR", error: err.message })    
     }
   };
-
+  
 
  module.exports.createAuthor=createAuthor
  module.exports.loginUser=loginUser
