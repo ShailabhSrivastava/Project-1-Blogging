@@ -82,7 +82,7 @@ let getBlogs = async function (req, res) {
 
 const updateBlog = async function (req, res) {
     try {
-        const blogData = req.params  
+        const blogData = req.body  
         let BLOG = req.params.blogId
         if (!mongoose.isValidObjectId(BLOG)){ return res.status(404).send({ status: false, data: "ID not Found in path param" })}
         let blog = await BlogModel.findOneAndUpdate(
