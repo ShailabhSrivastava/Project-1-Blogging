@@ -91,7 +91,7 @@ const updateBlog = async function (req, res) {
                 $set: { isPublished: true, body: blogData.body, title: blogData.title, publishedAt: new Date() },
                 $push: { tags: blogData.tags, subcategory: blogData.subcategory }
             },
-            { new: true });
+            { new: true });  
         return res.status(200).send({ status: true, data: blog });  
     }
     catch (error) {  
@@ -125,10 +125,10 @@ const deletebyquery=async function(req,res)
         const query=req.query
     if(Object.keys(query).length==0)
     return res.status(400).send({status:false,msg:"query params should not be empty"})
-    const data=await blogModel.find({query}).filter({isDeleted:false})
+    const data=await BlogModel.find({query}).filter({isDeleted:false})
     if(data.length==0)
     return res.status(400).send({status:false,msg:"no such blog matches"})
-    const saveData=await blogModel.find({query},{$set:{isDeleted:true}},{new:true})
+    const saveData=await BlogModel.find({query},{$set:{isDeleted:true}},{new:true})
     return res.status(200).send({status:true,msg:saveData})
 }
 catch(error)
