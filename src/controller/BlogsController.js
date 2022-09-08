@@ -40,8 +40,8 @@ const updateBlog = async function (req, res) {
     try {
         const blogData = req.body
         let BLOG = req.params.blogId
-        if (!mongoose.isValidObjectId(BLOG)) { return res.status(404).send({ status: false, data: "ID not Found in path param" }) }
-        let blog = await BlogModel.findOneAndUpdate(
+        if (!mongoose.Types.ObjectId.isValid(BLOG)) { return res.status(404).send({ status: false, data: "ID not Found in path param" }) }
+        let blog = await BlogModel.findOneAndUpdate( 
             { isDeleted: false, _id: BLOG },
             {
                 $set: { isPublished: true, body: blogData.body, title: blogData.title, publishedAt: new Date() },
@@ -51,7 +51,6 @@ const updateBlog = async function (req, res) {
         return res.status(200).send({ status: true, data: blog });
     }
     catch (error) {
-        console.log(error)
         return res.status(500).send({ status: false, Error: error.message })
     }
 
@@ -88,7 +87,7 @@ const deleteQueryParams = async function (req, res) {
         if (!authorId) {
             return res.send({msg:"authorId is compulsory"})
         }   
-        if (mongoose.isValidObjectId(authorId)) {                     
+        if (mongoose.isValidObjectId(authorId)) {                           
             filterQuery["authorId"] = authorId
         } 
         if ((category)) {

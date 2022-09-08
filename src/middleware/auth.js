@@ -30,8 +30,9 @@ const authorization = async function (req, res, next) {
         } else {
             let authorId = req.query.authorId
             if (authorId != userLoggedIn) return res.status(403).send({ status: false, msg: 'User logged is not allowed to modify the requested users data' })
+            next()
         }
-        next()
+        
     } catch (err) {
         res.status(500).send({ msg: "ERROR", error: err.message })
     }
