@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken")
 
 const createAuthor = async function (req, res) {
     try {
+      if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(data.emailId)) {
+        return res.status(400).send({ status: false, message: `Email should be a valid email address` });
+    }
+  
         let data = req.body
         let savedData = await authorModel.create(data)
         return res.status(201).send({ msg: savedData })

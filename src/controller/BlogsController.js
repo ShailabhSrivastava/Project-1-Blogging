@@ -170,7 +170,7 @@ const deletebyquery = async function (req, res) {
         filter["subcategory"] = req.query["subcategory"]
     }
 
-    let data = await blogsModels.updateMany(filter, { isDeleted: true },)
+    let data = await BlogModel.updateMany(filter, { isDeleted: true },)
 
     if (data.modifiedCount == 0) {
 
