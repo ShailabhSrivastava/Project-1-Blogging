@@ -137,19 +137,7 @@ const deleteBlogs = async function (req, res) {
 
 
 const deletebyquery = async function (req, res) {
-    // try {
-    //     const query = req.query
-    //     if (Object.keys(query).length == 0)
-    //         return res.status(400).send({ status: false, msg: "query params should not be empty" })
-    //     const data = await BlogModel.find({ query }).filter({ isDeleted: false })
-    //     if (data.length == 0)
-    //         return res.status(400).send({ status: false, msg: "no such blog matches" })
-    //     const saveData = await BlogModel.find({ query }, { $set: { isDeleted: true } }, { new: true })
-    //     return res.status(200).send({ status: true, msg: saveData })
-    // }
-    // catch (error) {
-    //     return res.status(500).send({ status: false, msg: error.message })
-    // }
+    
     try{
     if (Object.keys(req.query).length == 0) {
 
@@ -197,7 +185,23 @@ catch (error) {
 }
 }
 
-
+// const deletebyquery=async function(req,res)
+//  {
+//    try {
+//         const query=req.query
+//     if(Object.keys(query).length==0)
+//     return res.status(400).send({status:false,msg:"query params should not be empty"})
+//     const data=await BlogModel.find({query}).filter({isDeleted:false})
+//     if(data.length==0)
+//     return res.status(400).send({status:false,msg:"no such blog matches"})
+//     const saveData=await BlogModel.find({query},{$set:{isDeleted:true}},{new:true})
+//     return res.status(200).send({status:true,msg:saveData})
+// }
+// catch(error)
+// {
+//     return res.status(500).send({status:false,msg:error.message})
+// }
+//  }
 
 
 module.exports.createBlogs = createBlogs 
