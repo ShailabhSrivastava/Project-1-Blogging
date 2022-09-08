@@ -24,8 +24,6 @@ const createBlogs = async function (req, res) {
     
             let allQuery = req.query
             let blogsDetail = await BlogModel.find(({ $and: [allQuery, { isDeleted: false }, { isPublished: true }] }))
-            // console.log(blogsDetail)
-    
             if (blogsDetail == false)
                 res.status(404).send({ status: false, msg: "data not found" })
             else
@@ -78,76 +76,50 @@ const deleteBlogs = async function (req, res) {
 
 
 
-const deletebyquery = async function (req, res) {
-    
-    try{
-    if (Object.keys(req.query).length == 0) {
 
-        return res.status(400).send({ msg: "Blog details must be present", status: false })
-    }
 
-    let filter = { isDeleted: false, isPublished: false }
 
-    if (req.query["authorId"]) {
 
-        if (!mongoose.Types.ObjectId.isValid(req.query["authorId"])) {
-
-            return res.status(400).send({ msg: "authorId is is invalid", status: false })
+const deleteQueryParams = async function (req, res) {
+    try {
+        const data = req.query
+        const filterQuery = { isDeleted: false, deletedAt: null }
+        let { authorId, category, subcategory, tags, isPublished } = data 
+        if (!authorId) {
+            return res.send({msg:"authorId is compulsory"})
+        }   
+        if (mongoose.isValidObjectId(authorId)) {                     
+            filterQuery["authorId"] = authorId
+        } 
+        if ((category)) {
+            filterQuery["category"] = category
         }
-
-        filter["authorId"] = req.query["authorId"]
-    }
-
-    if (req.query["category"]) {
-
-        filter["category"] = req.query["category"]
-    }
-
-    if (req.query["tag"]) {
-
-        filter["tags"] = req.query["tag"]
-    }
-    if (req.query["subcategory"]) {
-
-        filter["subcategory"] = req.query["subcategory"]
-    }
-
-    let data = await BlogModel.updateMany(filter, { isDeleted: true },)
-
-    if (data.modifiedCount == 0) {
-
-        return res.status(404).send({ status: false, msg: "No document found" })
-    }
-
-    res.status(200).send({ status: true, msg: data });
-}
-catch (error) {
-
-    res.status(500).send({ status: false, msg: error.message });
-}
-}
-
-// const deletebyquery=async function(req,res)
-//  {
-//    try {
-//         const query=req.query
-//     if(Object.keys(query).length==0)
-//     return res.status(400).send({status:false,msg:"query params should not be empty"})
-//     const data=await BlogModel.find({query}).filter({isDeleted:false})
-//     if(data.length==0)
-//     return res.status(400).send({status:false,msg:"no such blog matches"})
-//     const saveData=await BlogModel.find({query},{$set:{isDeleted:true}},{new:true})
-//     return res.status(200).send({status:true,msg:saveData})
-// }
-// catch(error)
-// {
-//     return res.status(500).send({status:false,msg:error.message})
-// }
-//  }
+        if ((subcategory)) {
+            filterQuery["subcategory"] = subcategory
+        }
+        if ((tags)) {
+            filterQuery["tags"] = tags
+        }
+        if ((isPublished)) {
+            filterQuery["isPublished"] = isPublished
+        }
+        const deletedBlogs = await BlogModel.find(filterQuery) 
+        const deletedBlogs1 = await BlogModel.updateMany({ _id: { $in: deletedBlogs } }, { $set: { isDeleted: true, deletedAt: new Date() } })
+        if (deletedBlogs1.modifiedCount==0){
+            return res.send({msg:"Document not found"})
+        }
+        return res.status(200).send({ status: true, msg: deletedBlogs1})
+ 
+     }
+ 
+     catch (err) {
+         res.status(500).send({ status: false, msg: err.message });
+     }
+ }
 
 
 module.exports.createBlogs = createBlogs 
 module.exports.getBlogs = getBlogs
 module.exports.updateBlog = updateBlog
 module.exports.deleteBlogs = deleteBlogs
-module.exports.deletebyquery = deletebyquery
+module.exports.deleteQueryParams=deleteQueryParams

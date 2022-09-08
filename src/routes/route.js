@@ -23,6 +23,6 @@ router.post("/Blogs", BlogsController.createBlogs)
 router.put("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.updateBlog)
 router.delete("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.deleteBlogs)
 router.post("/login", authorController.loginUser)        
-router.delete("/blog",BlogsController.deletebyquery)      
+router.delete("/blog",middleware.authentication, middleware.authorization, BlogsController.deleteQueryParams)      
 
 module.exports = router;    
