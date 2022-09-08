@@ -20,8 +20,8 @@ res.send("this is second api")
 router.post("/authors", authorController.createAuthor)
 router.get("/blog",BlogsController.getBlogs)
 router.post("/Blogs", BlogsController.createBlogs)        
-router.put("/blogs/:blogId", middleware.mid1, middleware.authorization, BlogsController.updateBlog)
-router.delete("/blogs/:blogId", BlogsController.deleteBlogs)
-router.post("/login", authorController.loginUser)    
+router.put("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.updateBlog)
+router.delete("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.deleteBlogs)
+router.post("/login", authorController.loginUser)      
 
 module.exports = router;
