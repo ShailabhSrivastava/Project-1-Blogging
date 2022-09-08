@@ -18,10 +18,10 @@ res.send("this is second api")
 
 
 router.post("/authors", authorController.createAuthor)
-router.get("/blog",BlogsController.getBlogs)
+router.get("/blog", middleware.authentication, BlogsController.getBlogs)
 router.post("/Blogs", BlogsController.createBlogs)        
 router.put("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.updateBlog)
 router.delete("/blogs/:blogId", middleware.authentication, middleware.authorization, BlogsController.deleteBlogs)
-router.post("/login", authorController.loginUser)      
-
-module.exports = router;
+router.post("/login", authorController.loginUser)        
+  
+module.exports = router;    
