@@ -9,6 +9,7 @@ const authentication = async function (req, res, next) {
         if (!token) return res.status(401).send({ msg: "token must be present", status: false })
         let decodeToken = jwt.verify(token, "P1@roject")
         if (!decodeToken) return res.status(500).send({ msg: "token is inValid", status: false })
+        req.decodeToken=decodeToken
         next()
     } catch (err) {
         res.status(500).send({ msg: "ERROR", error: err.message })
@@ -31,7 +32,8 @@ const authorization = async function (req, res, next) {
             let authorId = req.query.authorId
             if (authorId != userLoggedIn) return res.status(403).send({ status: false, msg: 'User logged is not allowed to modify the requested users data' })
             next()
-        }
+            
+        } 
         
     } catch (err) {
         res.status(500).send({ msg: "ERROR", error: err.message })

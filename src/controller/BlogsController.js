@@ -82,28 +82,31 @@ const deleteBlogs = async function (req, res) {
 const deleteQueryParams = async function (req, res) {
     try {
         const data = req.query
-        const filterQuery = { isDeleted: false, deletedAt: null }
+        const filterQuery = { isPublished:false, isDeleted: false}
         let { authorId, category, subcategory, tags, isPublished } = data 
-        if (!authorId) {
-            return res.send({msg:"authorId is compulsory"})
+        if (Object.keys(data).length==0) {
+            return res.send({msg:"Pls Provide atleast one filter"})
         }   
-        if (mongoose.isValidObjectId(authorId)) {                           
-            filterQuery["authorId"] = authorId
-        } 
-        if ((category)) {
-            filterQuery["category"] = category
+        if (authorId){
+            if (authorId == req.decodeToken.userId){
+                filterQuery["authorId"] = authorId
+            } else {
+                return res.status(404).send({msg: "user is not authorised for this operation"})
+            }
+        } else {
+            filterQuery["authorId"] = req.decodeToken.userId
         }
-        if ((subcategory)) {
+        if (category) {
+            filterQuery["category"] = category 
+        }
+        if (subcategory) {
             filterQuery["subcategory"] = subcategory
         }
-        if ((tags)) {
+        if (tags) {
             filterQuery["tags"] = tags
         }
-        if ((isPublished)) {
-            filterQuery["isPublished"] = isPublished
-        }
-        const deletedBlogs = await BlogModel.find(filterQuery) 
-        const deletedBlogs1 = await BlogModel.updateMany({ _id: { $in: deletedBlogs } }, { $set: { isDeleted: true, deletedAt: new Date() } })
+        console.log(filterQuery)
+        const deletedBlogs1 = await BlogModel.updateMany(filterQuery, { $set: { isDeleted: true, deletedAt: new Date() } })
         if (deletedBlogs1.modifiedCount==0){
             return res.send({msg:"Document not found"})
         }
