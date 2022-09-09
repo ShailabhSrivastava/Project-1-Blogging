@@ -67,7 +67,6 @@ const deleteBlogs = async function (req, res) {
 
     try {
         let data = req.params
-        console.log(data)
         let BLOG = req.params.blogId
         if (!mongoose.isValidObjectId(BLOG)) { return res.status(404).send({ status: false, data: "ID not Found in path param" }) }
         let deletedBlog = await BlogModel.findOneAndUpdate({ isDeleted: false, _id: BLOG }, { isDeleted: true, deletedAt: new Date() }
@@ -111,7 +110,6 @@ const deleteQueryParams = async function (req, res) {
         if (tags) {
             filterQuery["tags"] = tags
         }
-        console.log(filterQuery)
         const deletedBlogs1 = await BlogModel.updateMany(filterQuery, { $set: { isDeleted: true, deletedAt: new Date() } })
         if (deletedBlogs1.modifiedCount==0){
             return res.send({msg:"Document not found"})
