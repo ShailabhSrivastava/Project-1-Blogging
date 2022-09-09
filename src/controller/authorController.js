@@ -3,11 +3,22 @@ const jwt = require("jsonwebtoken")
 
 const createAuthor = async function (req, res) {
   try {
-
-
     let data = req.body
+    
+    if (data.fname == undefined) {
+      return res.status(401).send({ msg: "fname Compulsory" })
+    }
+    if (data.lname == undefined) {
+      return res.status(401).send({ msg: "lname Compulsory" })
+    }
     if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(data.emailId)) {
       return res.status(400).send({ status: false, message: `Email should be a valid email address` });
+    }
+    if (data.password == undefined) {
+      return res.status(401).send({ msg: "password Compulsory" })
+    }
+    if (data.title == undefined) {
+      return res.status(401).send({ msg: "title Compulsory" })
     }
     let savedData = await authorModel.create(data)
     return res.status(201).send({ msg: savedData })

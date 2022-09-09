@@ -9,6 +9,12 @@ const createBlogs = async function (req, res) {
         if (!author) {
             res.status(404).send({ msg: "author ID is not valid", status: false })
         }
+        if (data.title==undefined){
+            return res.status(401).send({msg:"title Compulsory"})
+         }
+         if (data.body==undefined){
+            return res.status(401).send({msg:"body Compulsory"})
+         }
         let savedData = await BlogModel.create(data)
         return res.status(201).send({ msg: savedData })
     }
@@ -85,7 +91,7 @@ const deleteQueryParams = async function (req, res) {
         const filterQuery = { isPublished:false, isDeleted: false}
         let { authorId, category, subcategory, tags, isPublished } = data 
         if (Object.keys(data).length==0) {
-            return res.send({msg:"Pls Provide atleast one filter"})
+            return res.status(400).send({msg:"Pls Provide atleast one filter"})
         }   
         if (authorId){
             if (authorId == req.decodeToken.userId){
