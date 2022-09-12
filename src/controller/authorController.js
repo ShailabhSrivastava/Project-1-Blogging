@@ -11,7 +11,7 @@ const createAuthor = async function (req, res) {
     if (data.lname == undefined) {
       return res.status(401).send({ msg: "lname Compulsory" })
     }
-    if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(data.email)) {
+    if (!(/^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/).test(data.emailId)) {
       return res.status(400).send({ status: false, message: `Email should be a valid email address` });
     }
     if (data.password == undefined) {

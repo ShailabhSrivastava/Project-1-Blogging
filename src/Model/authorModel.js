@@ -11,7 +11,7 @@ const authorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
+    emailId: {
         type: String,
         required: true,
         unique: true,
