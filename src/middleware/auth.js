@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 const authentication = async function (req, res, next) {
     try {
-        let token = req.headers["x-auth-token"]
+        let token = req.headers["x-api-key"]
         if (!token) return res.status(401).send({ msg: "token must be present", status: false })
         let decodeToken = jwt.verify(token, "P1@roject")
         if (!decodeToken) return res.status(500).send({ msg: "token is inValid", status: false })
@@ -18,7 +18,7 @@ const authentication = async function (req, res, next) {
 
 const authorization = async function (req, res, next) {
     try {
-        let token = req.headers["x-auth-token"]
+        let token = req.headers["x-api-key"]
         if (!token) return res.status(401).send({ msg: "token must be present", status: false })
         let blogId = req.params.blogId
         let decodeToken = jwt.verify(token, "P1@roject")
